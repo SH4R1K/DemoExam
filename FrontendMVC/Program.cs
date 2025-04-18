@@ -9,6 +9,11 @@ builder.Services.AddDbContext<MasterPolContext>(options =>
 {
     options.UseMySQL(builder.Configuration.GetConnectionString("MySQLConnString") ?? throw new ArgumentNullException());
 });
+
+builder.Services.AddAuthentication("Cookies").AddCookie(options =>
+{
+    options.LoginPath = "/Auth/Login";
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -19,6 +24,7 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
 
 app.UseAuthorization();
 
